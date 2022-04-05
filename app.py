@@ -1,17 +1,15 @@
-import os
-from flask import Flask
+from crypt import methods
+from unittest import result
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-
-
-basedir = os.path.abspath(os.path.dirname(__file__))
-# __file__ is atomatically set to basic.py with the above code
-
+from sqlalchemy import create_engine
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-    os.path.join(basedir, 'site.db')  # <-- Database location setup
+# <-- Database location setup
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    'postgresql://postgres:7890@localhost/fake_api')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
