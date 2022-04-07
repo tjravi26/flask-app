@@ -25,17 +25,23 @@ cur = conn.cursor()
 def user_posts(id):
     cur.execute(f'SELECT title, body FROM posts WHERE id={id}')
     user_posts = cur.fetchall()
-    return render_template('users_list.html', user_posts=user_posts)
+    return render_template('output.html', outputs=user_posts)
 
 
-@app.rout('/post/<id>')
+@app.route('/post/<id>')
 def post_id(id):
     cur.execute(f'SELECT "userId" FROM posts WHERE id={id}')
-    user_posts = cur.fetchall()
-    return render_template('users_list.html', user_posts=user_posts)
+    post_id = cur.fetchall()
+    return render_template('output.html', outputs=post_id)
 
 
-@app.rout('/comment/<id>')
+@app.route('/comment/<id>')
+def comment_id(id):
+    cur.execute(f'SELECT "postId" FROM comments WHERE id={id}')
+    comment_id = cur.fetchall()
+    return render_template('output.html', outputs=comment_id)
+
+
 #############
 db = SQLAlchemy(app)
 
