@@ -1,15 +1,22 @@
-from crypt import methods
-from unittest import result
-from flask import Flask, render_template, request
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from sqlalchemy import create_engine
+import psycopg2
+import psycopg2.extras
 
 app = Flask(__name__)
 
-# <-- Database location setup
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    'postgresql://postgres:7890@localhost/fake_api')
+# Database location setup
+
+DB_HOST = 'localhost'
+DB_NAME = 'fake_api'
+DB_USER = 'postgres'
+DB_PASS = '7890'
+
+conn = psycopg2.connect(host=DB_HOST, dbname=DB_NAME,
+                        user=DB_USER, password=DB_PASS)
+
+app.config['SECRET_KEY'] = 'potato'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -78,6 +85,13 @@ class Comments(db.Model):
         self.email = email
         self.body = body
     db.create_all()
+
+
+@app.route('/post/<id>', methods='GET')
+def user_posts(id):
+
+    else:
+        return {"You are not allowed to post yet."}
 
 
 if __name__ == '__main__':
